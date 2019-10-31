@@ -1,0 +1,74 @@
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <script src="../../lib/aframe.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </head>
+  <body>
+    <a-scene shadow="type: pcfsoft">
+      <a-assets>
+        <img src="../../assets/skymap2.jpg" id="sky">
+        <img src="../../assets/stone/Stone_02_COLOR.jpg" id="stoneCOLOR">
+        <img src="../../assets/stone/Stone_02_DISP.jpg" id="stoneDISP">
+        <img src="../../assets/stone/Stone_02_NRM.jpg" id="stoneNRM">
+        <img src="../../assets/stone/Stone_02_OCC.jpg" id="stoneOCC">
+        <audio id="atmo" src="../../assets/atmo.mp3" preload="auto"></audio>
+      </a-assets>
+
+      <a-sky src="#sky" phi-start="90"></a-sky>
+      <a-plane width="15" height="20" material="opacity: 0.9" position="0 0 -6" rotation="-90 0 0" color="#854" shadow="receive: true"></a-plane>
+      <a-light type="ambient" intensity="0.5"></a-light>
+      <a-entity light="type: directional; target: #mat2; color: white; castShadow: true; intensity: 0.8;"
+                position="0 5 0" rotation="0 0 0"></a-entity>
+      <a-entity sound="src: #atmo; autoplay: true; loop: true; positional: false;"></a-entity>
+              
+      <!-- MATERIAL 0 -->
+      <a-text value="Environment Map" position="-4 3 -4" align="center"></a-text>
+      <a-entity id="mat1" shadow="cast: true" position="-4 1.4 -4" 
+                geometry="primitive: sphere;" 
+                material="shader: standard; sphericalEnvMap: #sky; color: #faf896; metalness: 0.73; roughness: 0.1"                
+                animation="property: position; to: -4 1.6 -4; loop: true; dir: alternate; dur: 1000; easing: easeInOutCubic"></a-entity>
+
+      <!-- MATERIAL 1 -->
+      <a-text value="Metallic" position="-2 3 -4" align="center"></a-text>
+      <a-entity id="mat1" shadow="cast: true" position="-2 1.5 -4" 
+                geometry="primitive: torus; radius: 0.8; radiusTubular: 0.15" 
+                material="shader: standard; color: #E32; metalness: 0.6; roughness: 0.2" 
+                animation="property: rotation; to: 0 180 0; dur: 3000; loop:true; easing: linear"></a-entity>
+      
+      <!-- MATERIAL 2 -->
+      <a-text value="Transparent" position="0 3 -4" align="center"></a-text>
+      <a-entity id="mat2"  position="0 1.5 -4" 
+                geometry="primitive: torusKnot; radius: 0.7; radiusTubular: 0.08" 
+                material="color: #4E8; transparent: true; opacity: 0.4" 
+                animation="property: rotation; to: 0 360 0; dur: 9000; loop:true; easing: linear"></a-entity>
+
+      <!-- MATERIAL 3 -->
+      <a-text value="Textur" position="2 3 -4" align="center"></a-text>
+      <a-entity id="mat3" shadow="cast: true" position="2 1.5 -4" rotation="45 0 0"
+                geometry="primitive: box;" 
+                material="ambientOcclusionMap: #stoneOCC; 
+                          displacementMap: #stoneDISP;
+                          displacementScale: -0.91;
+                          normalMap: #stoneNRM;
+                          normalScale: 0.1 0.1;
+                          src: #stoneCOLOR;
+                          roughness: 1; metalness: 0"
+                animation="property: rotation; to: 45 360 0; dur: 9000; loop:true; easing: linear"></a-entity>
+
+      <!-- MATERIAL 4 -->
+      <a-text value="Custom Shader" position="4 3 -4" align="center"></a-text>
+      <a-sphere id="mat4" shadow="cast: true" position="4 1.5 -3.5"
+              material="shader:grid-glitch; color: blue;"
+              radius="0.8d"
+              animation="property: position; to: 4 1.5 -4.5; loop: true; dir: alternate; dur: 2000; easing: easeInOutElastic"> </a-sphere>
+
+      <!-- CURSOR -->
+      <a-entity camera look-controls rotation-reader wasd-controls position="0 2 0">
+        <a-cursor raycaster="objects: .clickable" color="#fff" cursor="fuse: true;">
+        </a-cursor>
+      </a-entity>   
+
+    </a-scene>
+  </body>
+</html>

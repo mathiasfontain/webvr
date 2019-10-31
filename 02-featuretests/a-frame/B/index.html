@@ -1,0 +1,27 @@
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <script src="../../lib/aframe.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </head>
+  <body>
+    <a-scene myscene>
+      <a-assets>
+        <img id="worldmap" src="../../assets/worldmap.jpg">
+        <a-asset-item id="iss" src="../../assets/model/scene.gltf"></a-asset-item>
+      </a-assets>
+      <a-sky color="#191919"></a-sky>
+      <a-image src="#worldmap" position="0 0 -10" width="20" height="10"></a-image>
+
+      <a-entity id="issmodel" issdata gltf-model="#iss" scale="0.2 0.2 0.2"></a-entity>
+
+      <a-entity camera look-controls rotation-reader wasd-controls position="0 1 0">
+        <a-cursor raycaster="objects: .clickable" color="#fff" cursor="fuse: true;"></a-cursor>
+      </a-entity>   
+
+      <a-entity light="type: point; color: white; intensity: 8;" position="0 0 0" rotation="0 0 0" target="#issmodel">
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>

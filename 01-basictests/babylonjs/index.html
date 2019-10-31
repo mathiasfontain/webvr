@@ -1,0 +1,78 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>Babylon - Getting Started</title>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
+    <style>
+        html, body {
+            overflow: hidden;
+            width   : 100%;
+            height  : 100%;
+            margin  : 0;
+            padding : 0;
+        }
+    
+        #renderCanvas {
+            width   : 100%;
+            height  : 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var canvas = document.getElementById('renderCanvas');
+        var engine = new BABYLON.Engine(canvas, true);
+
+        var createScene = function() {
+            var scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color3(0.15, 0.15, 0.15);
+
+            var vrHelper = scene.createDefaultVRExperience();
+
+            var camera = new BABYLON.WebVRFreeCamera('camera', new BABYLON.Vector3(0, 1,0), scene);
+            //camera.setTarget(BABYLON.Vector3.Zero());
+            camera.attachControl(canvas, false);
+
+            var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
+
+            var count = 5;
+            for (let x = -count; x < count; x++) {
+                for (let y = -count; y < count; y++) {
+                    var box = BABYLON.MeshBuilder.CreateBox('box', { height: 0.1, width: 0.75, depth: 0.75 }, scene);
+                    box.position = {x: x, y: 0, z: y}
+                    var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+                    myMaterial.diffuseColor = getColor(x, y);
+                    box.material = myMaterial;
+                }
+            }
+            return scene;
+        }
+
+        var getColor = function (xPos, yPos) {
+            var myColor = new BABYLON.Color3(0, 0, 0);
+            BABYLON.Color3.HSVtoRGBToRef(map(xPos+yPos, -10, 10, 0, 255), 0.8, 1, myColor);
+            return myColor;
+        }
+
+        var map = function(value, in_min, in_max, out_min, out_max) {
+            return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+        
+        var scene = createScene();
+
+        engine.runRenderLoop(function() {
+            scene.render();
+        });
+
+        window.addEventListener('resize', function() {
+            engine.resize();
+        });
+    });
+</script>
+</html>

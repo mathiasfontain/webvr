@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+        </style>
+	</head>
+	<body>
+        <script src="../lib/three.js"></script>
+        <script src="../lib/WebVR.js"></script>
+        <script>
+            var camera, scene, renderer;
+            var geometry, material, mesh;
+            
+            init();
+            animate();
+            
+            function init() 
+            {
+                camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+                camera.position.z = 5;
+                camera.position.x = 5;
+                camera.position.y = 1;
+                
+                scene = new THREE.Scene();
+            
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        geometry = new THREE.BoxGeometry( 0.75, 0.1, 0.75 );
+                        material = new THREE.MeshBasicMaterial(); 
+                        material.color = new THREE.Color(j/10,0.8,i/10);
+                                     
+                        mesh = new THREE.Mesh( geometry, material );
+                        scene.add( mesh );
+                        mesh.position.set(i, 0, j);
+                    }
+                }
+            
+                renderer = new THREE.WebGLRenderer( { antialias: true } );
+                renderer.vr.enabled = true;
+                renderer.setSize( window.innerWidth, window.innerHeight );
+
+                document.body.appendChild( WEBVR.createButton( renderer ) );
+                document.body.appendChild( renderer.domElement );
+
+                console.log(renderer.vr.getDevice());
+            }
+                
+            function animate()
+            {           
+                requestAnimationFrame( animate );
+            
+                renderer.setAnimationLoop( function () {                     
+                    renderer.render( scene, camera );
+                });
+            }
+        </script>
+	</body>
+</html>
